@@ -24,6 +24,9 @@ jobs:
       - name: Install Linux dependencies
         if: runner.os == 'Linux'
         run: sudo apt-get update && sudo apt-get install -y libsecret-1-dev
+      - name: Install Windows dependencies
+        if: runner.os == 'Windows'
+        run: choco install nsis --yes --no-progress
       - name: Configure
         run: cmake -S . -B build -DFTREMOTE_BUILD_TESTS=ON -DFTREMOTE_FETCH_QTKEYCHAIN=ON
       - name: Build
