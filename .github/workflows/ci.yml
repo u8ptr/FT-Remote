@@ -43,6 +43,7 @@ jobs:
           cp packaging/ftremote.svg AppDir/usr/share/icons/hicolor/scalable/apps/ftremote.svg
           curl -L --fail --retry 3 -o linuxdeploy.AppImage https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
           chmod +x linuxdeploy.AppImage
+          export LD_LIBRARY_PATH="$GITHUB_WORKSPACE/AppDir/usr/lib:$LD_LIBRARY_PATH"
           ./linuxdeploy.AppImage --appdir AppDir --output appimage
       - uses: actions/upload-artifact@v4
         with:
