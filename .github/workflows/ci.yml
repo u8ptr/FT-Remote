@@ -31,6 +31,16 @@ jobs:
         run: cmake -S . -B build -DFTREMOTE_BUILD_TESTS=ON -DFTREMOTE_FETCH_QTKEYCHAIN=ON
       - name: Build
         run: cmake --build build --config Release --parallel
+      - name: Stage Windows QtKeychain runtime
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $source = Join-Path $env:GITHUB_WORKSPACE 'build\Release\qt6keychain.dll'
+          $destination = Join-Path $env:QT_ROOT_DIR 'bin\qt6keychain.dll'
+          if (-not (Test-Path -LiteralPath $source -PathType Leaf)) {
+            throw "QtKeychain runtime not found at $source"
+          }
+          Copy-Item -LiteralPath $source -Destination $destination
       - name: Test
         run: ctest --test-dir build -C Release --output-on-failure
       - name: Package
