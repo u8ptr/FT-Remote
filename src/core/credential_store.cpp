@@ -1,7 +1,13 @@
 #include "credential_store.h"
 
 #ifdef FTREMOTE_HAS_QTKEYCHAIN
+#if __has_include(<qtkeychain/keychain.h>)
+#include <qtkeychain/keychain.h>
+#elif __has_include(<qt6keychain/keychain.h>)
 #include <qt6keychain/keychain.h>
+#else
+#error "QtKeychain headers are unavailable"
+#endif
 #endif
 
 namespace ftremote {

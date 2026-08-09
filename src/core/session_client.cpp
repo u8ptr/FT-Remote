@@ -99,7 +99,7 @@ void SessionClient::login(const QString &server, const QString &username, const 
     if (!m_baseUrl.isValid() || m_baseUrl.host().isEmpty() || m_username.isEmpty() ||
         (m_baseUrl.scheme() != QStringLiteral("https") &&
          !(m_baseUrl.scheme() == QStringLiteral("http") &&
-           (m_baseUrl.host() == QStringLiteral("localhost") || m_baseUrl.host() == QStringLiteral("127.0.0.1")))) {
+           (m_baseUrl.host() == QStringLiteral("localhost") || m_baseUrl.host() == QStringLiteral("127.0.0.1"))))) {
         emit loginFailed(QStringLiteral("请输入有效的 HTTPS 服务器和用户名；仅允许本机 HTTP 开发地址"));
         return;
     }
@@ -145,8 +145,8 @@ void SessionClient::handleSslCertificate(const QSslCertificate &certificate)
     }
     if (pin.isEmpty()) {
         m_pendingFingerprint = fingerprint;
-        emit certificateTrustRequired(origin(), fingerprint, certificate.subjectInfo(QSslCertificate::CommonName),
-                                      certificate.issuerInfo(QSslCertificate::CommonName));
+        emit certificateTrustRequired(origin(), fingerprint, certificate.subjectDisplayName(),
+                                      certificate.issuerDisplayName());
     }
 }
 
@@ -552,7 +552,7 @@ void SessionClient::logout()
     if (!m_token.isEmpty()) {
         QNetworkRequest request(apiUrl(QStringLiteral("/api/v1/auth/logout")));
         request.setRawHeader("Authorization", QByteArrayLiteral("Bearer ") + m_token.toUtf8());
-        m_network.post(request, {});
+        m_network.post(request, nullptr);
     }
     m_control.close();
     m_media.close();
