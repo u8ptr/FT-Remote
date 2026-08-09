@@ -42,7 +42,7 @@ if(FTREMOTE_USE_QTKEYCHAIN)
         include(FetchContent)
         FetchContent_Declare(qtkeychain
             GIT_REPOSITORY https://github.com/frankosterfeld/qtkeychain.git
-            GIT_TAG 0.17.99
+            GIT_TAG 0.17.0
         )
         set(BUILD_WITH_QT5 OFF CACHE BOOL "" FORCE)
         set(BUILD_TRANSLATIONS OFF CACHE BOOL "" FORCE)
