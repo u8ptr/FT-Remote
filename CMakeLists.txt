@@ -50,6 +50,11 @@ if(FTREMOTE_USE_QTKEYCHAIN)
         set(BUILD_TESTING OFF CACHE BOOL "" FORCE)
         FetchContent_MakeAvailable(qtkeychain)
         if(TARGET qt6keychain)
+            if(WIN32)
+                set_target_properties(qt6keychain PROPERTIES
+                    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}"
+                )
+            endif()
             set(Qt6Keychain_FOUND TRUE)
             set(FTREMOTE_QTKEYCHAIN_TARGET qt6keychain)
         endif()
