@@ -36,7 +36,7 @@ jobs:
         if: runner.os == 'Linux'
         shell: bash
         run: |
-          cmake --install build --prefix AppDir/usr --config Release
+          cmake --install build --prefix "$GITHUB_WORKSPACE/AppDir/usr" --config Release
           mkdir -p AppDir/usr/share/applications
           mkdir -p AppDir/usr/share/icons/hicolor/scalable/apps
           cp packaging/ftremote.desktop AppDir/usr/share/applications/ftremote.desktop
