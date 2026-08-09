@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=FT Remote
+Comment=FTBridge amateur radio remote control client
+Exec=ftremote
+Icon=ftremote
+Categories=AudioVideo;HamRadio;

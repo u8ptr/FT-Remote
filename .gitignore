@@ -1,0 +1,7 @@
+build/
+out/
+.cache/
+.DS_Store
+*.user
+*.qmlc
+compile_commands.json

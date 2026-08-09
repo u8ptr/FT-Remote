@@ -1,0 +1,55 @@
+name: build
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  desktop:
+    name: ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, macos-14, ubuntu-24.04]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: jurplel/install-qt-action@v4
+        with:
+          version: '6.8.3'
+          host: ${{ runner.os == 'Windows' && 'windows' || runner.os == 'macOS' && 'mac' || 'linux' }}
+          target: desktop
+          arch: ${{ runner.os == 'Windows' && 'win64_msvc2022_64' || runner.os == 'macOS' && 'clang_64' || 'linux_gcc_64' }}
+          modules: 'qtmultimedia qtwebsockets qtquickcontrols2'
+      - name: Install Linux dependencies
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y libsecret-1-dev
+      - name: Configure
+        run: cmake -S . -B build -DFTREMOTE_BUILD_TESTS=ON -DFTREMOTE_FETCH_QTKEYCHAIN=ON
+      - name: Build
+        run: cmake --build build --config Release --parallel
+      - name: Test
+        run: ctest --test-dir build -C Release --output-on-failure
+      - name: Package
+        run: cpack --config build/CPackConfig.cmake -C Release
+      - name: Build Linux AppImage
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          cmake --install build --prefix AppDir/usr --config Release
+          mkdir -p AppDir/usr/share/applications
+          mkdir -p AppDir/usr/share/icons/hicolor/scalable/apps
+          cp packaging/ftremote.desktop AppDir/usr/share/applications/ftremote.desktop
+          cp packaging/ftremote.svg AppDir/usr/share/icons/hicolor/scalable/apps/ftremote.svg
+          curl -L --fail --retry 3 -o linuxdeploy.AppImage https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
+          chmod +x linuxdeploy.AppImage
+          ./linuxdeploy.AppImage --appdir AppDir --output appimage
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ft-remote-${{ matrix.os }}
+          path: |
+            *.zip
+            *.dmg
+            *.tar.gz
+            *.AppImage
+          if-no-files-found: warn
