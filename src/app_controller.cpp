@@ -118,7 +118,9 @@ void AppController::logout()
 void AppController::setFrequency(const QString &frequencyHz)
 {
     bool ok = false;
-    const qint64 value = frequencyHz.remove(QRegularExpression(QStringLiteral("[^0-9]"))).toLongLong(&ok);
+    QString normalizedFrequency = frequencyHz;
+    normalizedFrequency.remove(QRegularExpression(QStringLiteral("[^0-9]")));
+    const qint64 value = normalizedFrequency.toLongLong(&ok);
     if (ok)
         m_session.setFrequency(value);
 }
