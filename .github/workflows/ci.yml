@@ -20,7 +20,7 @@ jobs:
           host: ${{ runner.os == 'Windows' && 'windows' || runner.os == 'macOS' && 'mac' || 'linux' }}
           target: desktop
           arch: ${{ runner.os == 'Windows' && 'win64_msvc2022_64' || runner.os == 'macOS' && 'clang_64' || 'linux_gcc_64' }}
-          modules: 'qtmultimedia qtwebsockets qtquickcontrols2'
+          modules: 'qtmultimedia qtwebsockets'
       - name: Install Linux dependencies
         if: runner.os == 'Linux'
         run: sudo apt-get update && sudo apt-get install -y libsecret-1-dev
