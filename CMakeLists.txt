@@ -105,6 +105,16 @@ install(TARGETS ftremote
     RUNTIME DESTINATION bin
 )
 
+# QtKeychain is a non-Qt shared library. Qt's generated deployment script
+# deploys Qt frameworks and plugins, but it does not reliably install a
+# FetchContent-built third-party dylib into the application bundle.
+if(APPLE AND TARGET qt6keychain)
+    install(TARGETS qt6keychain
+        LIBRARY DESTINATION ftremote.app/Contents/Frameworks
+        RUNTIME DESTINATION ftremote.app/Contents/Frameworks
+    )
+endif()
+
 if(COMMAND qt_generate_deploy_app_script)
     qt_generate_deploy_app_script(
         TARGET ftremote

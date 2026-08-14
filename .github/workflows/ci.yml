@@ -45,6 +45,16 @@ jobs:
         run: ctest --test-dir build -C Release --output-on-failure
       - name: Package
         run: cpack --config build/CPackConfig.cmake -C Release
+      - name: Verify macOS bundle dependencies
+        if: runner.os == 'macOS'
+        shell: bash
+        run: |
+          install_root="$RUNNER_TEMP/ftremote-install"
+          cmake --install build --prefix "$install_root" --config Release
+          app="$install_root/ftremote.app"
+          keychain="$app/Contents/Frameworks/libqt6keychain.1.dylib"
+          test -f "$keychain"
+          otool -L "$app/Contents/MacOS/ftremote" | grep -Fq '@rpath/libqt6keychain.1.dylib'
       - name: Build Linux AppImage
         if: runner.os == 'Linux'
         shell: bash
