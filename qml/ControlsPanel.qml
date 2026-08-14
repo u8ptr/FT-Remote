@@ -15,11 +15,11 @@ Frame {
         modal: true
         title: qsTr("Confirm high-risk CAT action")
         anchors.centerIn: Overlay.overlay
+        width: 500
         standardButtons: Dialog.Cancel
         visible: app.safetyConfirmation.length > 0
         onRejected: app.cancelSafety()
         contentItem: ColumnLayout {
-            width: 460
             spacing: 10
             Label { text: qsTr("The server prepared a one-time action confirmation."); color: "#e8edf2"; wrapMode: Text.WordWrap; Layout.fillWidth: true }
             Label { text: qsTr("Action digest:") + " " + app.safetyDigest; color: "#f3c969"; wrapMode: Text.WordWrap; Layout.fillWidth: true }

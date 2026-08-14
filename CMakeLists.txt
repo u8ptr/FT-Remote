@@ -15,6 +15,13 @@ option(FTREMOTE_FETCH_QTKEYCHAIN "Fetch and build QtKeychain when no package is 
 
 find_package(Qt6 6.8 REQUIRED COMPONENTS Core Gui Qml Quick QuickControls2 Network WebSockets Multimedia LinguistTools)
 
+if(QT_KNOWN_POLICY_QTP0001)
+    qt_policy(SET QTP0001 NEW)
+endif()
+if(QT_KNOWN_POLICY_QTP0004)
+    qt_policy(SET QTP0004 NEW)
+endif()
+
 add_library(ftremote_core
     src/core/protocol_types.cpp
     src/core/protocol_types.h
@@ -115,8 +122,8 @@ if(APPLE AND TARGET qt6keychain)
     )
 endif()
 
-if(COMMAND qt_generate_deploy_app_script)
-    qt_generate_deploy_app_script(
+if(COMMAND qt_generate_deploy_qml_app_script)
+    qt_generate_deploy_qml_app_script(
         TARGET ftremote
         OUTPUT_SCRIPT deploy_script
         NO_UNSUPPORTED_PLATFORM_ERROR

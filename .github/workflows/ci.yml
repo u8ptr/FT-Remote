@@ -53,7 +53,9 @@ jobs:
           cmake --install build --prefix "$install_root" --config Release
           app="$install_root/ftremote.app"
           keychain="$app/Contents/Frameworks/libqt6keychain.1.dylib"
+          qml_module="$app/Contents/Resources/qml/QtQuick/qmldir"
           test -f "$keychain"
+          test -f "$qml_module"
           otool -L "$app/Contents/MacOS/ftremote" | grep -Fq '@rpath/libqt6keychain.1.dylib'
       - name: Build Linux AppImage
         if: runner.os == 'Linux'

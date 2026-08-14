@@ -4,10 +4,12 @@
 #include <QLocale>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
+#include <QQuickStyle>
 #include <QTranslator>
 
 int main(int argc, char *argv[])
 {
+    QQuickStyle::setStyle(QStringLiteral("Basic"));
     QGuiApplication app(argc, argv);
     QCoreApplication::setOrganizationName(QStringLiteral("FT Remote"));
     QCoreApplication::setApplicationName(QStringLiteral("FT Remote"));
