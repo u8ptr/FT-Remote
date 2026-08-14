@@ -74,8 +74,9 @@ jobs:
         with:
           name: ft-remote-${{ matrix.os }}
           path: |
+            *.exe
             *.zip
             *.dmg
             *.tar.gz
             *.AppImage
-          if-no-files-found: warn
+          if-no-files-found: error

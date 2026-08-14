@@ -5,3 +5,5 @@ out/
 *.user
 *.qmlc
 compile_commands.json
+.idea/
+build-local/
